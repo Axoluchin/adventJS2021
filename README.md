@@ -424,7 +424,7 @@ export default function maxProfit(prices) {
 
 # [Día 9 | Agrupando cosas automáticamente](https://adventjs.dev/challenges/09)
 
->Tenemos un montón de cajas en la fábrica de regalos... y como no automaticemos de alguna forma ordenar este desastre... ¡Igual nos quedamos sin Navidad!
+> Tenemos un montón de cajas en la fábrica de regalos... y como no automaticemos de alguna forma ordenar este desastre... ¡Igual nos quedamos sin Navidad!
 
 En la fábrica de Papa Noél 🎅 se acerca el día especial... y todavía tenemos un montón de cosas por contar. 😅
 
@@ -479,6 +479,46 @@ export default function groupBy(collection, it) {
     });
 
   return lista;
+}
+```
+
+# [Día 10 | La máquina de cambio](https://adventjs.dev/challenges/10)
+>De cara a las ventas navideñas, vamos a automatizar el cambio de las monedas para que no se tenga que hacer manualmente. ¡Ganaremos tiempo! Pero primero, hay que programarlo.
+
+Para mejorar la productividad de la tienda en la que trabajamos, vamos a crear una pequeña máquina que calcula el mínimo número de monedas que debemos usar para dar el cambio de una compra en metálico.
+
+Las monedas para cambio que puedes usar son estas:
+```js
+coins[0] = 1 céntimo
+coins[1] = 2 céntimos
+coins[2] = 5 céntimos
+coins[3] = 10 céntimos
+coins[4] = 20 céntimos
+coins[5] = 50 céntimos
+```
+Tenemos que crear una función que recibe el número de céntimos que hay que devolver al cliente y la función nos da un array con la **combinación de monedas mínimas** que debemos usar para conseguirlo.
+```js
+getCoins(51) // [1, 0, 0, 0, 0, 1] -> una moneda de 1 céntimo y otra de 50 céntimos
+getCoins(3) // [1, 1, 0, 0, 0, 0] -> una moneda de 1 céntimo y otra de 2
+getCoins(5) // [0, 0, 1, 0, 0, 0] -> una moneda de 5 céntimos
+getCoins(16) // [1, 0, 1, 1, 0, 0] -> una moneda de 1 céntimo, una de 5 y una de 10
+getCoins(100) // [0, 0, 0, 0, 0, 2] -> dos monedas de 50 céntimos
+```
+La dificultad del reto está en saber utilizar correctamente una estructura que te permita conocer las monedas que tienes disponible para crear el array con la devolución, ya que **debes usar siempre el menor número de monedas posible**. ¡Suerte 👩‍💻👨‍💻!.
+
+## Mi solución
+
+```js
+export default function getCoins(change) {
+  const valor = [1, 2, 5, 10, 20, 50];
+  const cambio = [0, 0, 0, 0, 0, 0];
+  for (let i = cambio.length - 1; i >= 0; i--) {
+    while (change - valor[i] >= 0) {
+      change -= valor[i];
+      cambio[i]++;
+    }
+  }
+  return cambio;
 }
 ```
 
