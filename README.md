@@ -483,11 +483,13 @@ export default function groupBy(collection, it) {
 ```
 
 # [Día 10 | La máquina de cambio](https://adventjs.dev/challenges/10)
->De cara a las ventas navideñas, vamos a automatizar el cambio de las monedas para que no se tenga que hacer manualmente. ¡Ganaremos tiempo! Pero primero, hay que programarlo.
+
+> De cara a las ventas navideñas, vamos a automatizar el cambio de las monedas para que no se tenga que hacer manualmente. ¡Ganaremos tiempo! Pero primero, hay que programarlo.
 
 Para mejorar la productividad de la tienda en la que trabajamos, vamos a crear una pequeña máquina que calcula el mínimo número de monedas que debemos usar para dar el cambio de una compra en metálico.
 
 Las monedas para cambio que puedes usar son estas:
+
 ```js
 coins[0] = 1 céntimo
 coins[1] = 2 céntimos
@@ -496,14 +498,17 @@ coins[3] = 10 céntimos
 coins[4] = 20 céntimos
 coins[5] = 50 céntimos
 ```
+
 Tenemos que crear una función que recibe el número de céntimos que hay que devolver al cliente y la función nos da un array con la **combinación de monedas mínimas** que debemos usar para conseguirlo.
+
 ```js
-getCoins(51) // [1, 0, 0, 0, 0, 1] -> una moneda de 1 céntimo y otra de 50 céntimos
-getCoins(3) // [1, 1, 0, 0, 0, 0] -> una moneda de 1 céntimo y otra de 2
-getCoins(5) // [0, 0, 1, 0, 0, 0] -> una moneda de 5 céntimos
-getCoins(16) // [1, 0, 1, 1, 0, 0] -> una moneda de 1 céntimo, una de 5 y una de 10
-getCoins(100) // [0, 0, 0, 0, 0, 2] -> dos monedas de 50 céntimos
+getCoins(51); // [1, 0, 0, 0, 0, 1] -> una moneda de 1 céntimo y otra de 50 céntimos
+getCoins(3); // [1, 1, 0, 0, 0, 0] -> una moneda de 1 céntimo y otra de 2
+getCoins(5); // [0, 0, 1, 0, 0, 0] -> una moneda de 5 céntimos
+getCoins(16); // [1, 0, 1, 1, 0, 0] -> una moneda de 1 céntimo, una de 5 y una de 10
+getCoins(100); // [0, 0, 0, 0, 0, 2] -> dos monedas de 50 céntimos
 ```
+
 La dificultad del reto está en saber utilizar correctamente una estructura que te permita conocer las monedas que tienes disponible para crear el array con la devolución, ya que **debes usar siempre el menor número de monedas posible**. ¡Suerte 👩‍💻👨‍💻!.
 
 ## Mi solución
@@ -519,6 +524,53 @@ export default function getCoins(change) {
     }
   }
   return cambio;
+}
+```
+
+# [Día 11 | ¿Vale la pena la tarjeta fidelidad del cine?](https://adventjs.dev/challenges/11)
+
+> ¡Este mes hay un montón de peliculones en el cine! Viendo que voy a tener que pasar bastante por taquilla también en 2022, estoy mirando de optimizar mis gastos. ¡Ayúdame!
+
+Este mes de diciembre hay películas super interesantes en el cine... y tengo que optimizar cómo gasto el dinero.
+
+Mi cine favorito tiene dos posibilidades:
+
+• Entrada de un sólo uso: Cuesta 12$ por cada película.
+
+• Tarjeta de fidelidad: Cuesta 250$ pero que cada vez que vas **pagas sólo el 75% del precio del ticket**. ¡Lo mejor es que se acumula! Y cada vez que vas, se paga el 75% del precio del ticket que pagaste la última vez.
+Ejemplo de cada una al comprar 3 entradas y el precio que pagaría en total:
+
+```js
+// Entrada normal: 12$ * 3 = 36$
+// Tarjeta fidelidad: 250$ + (12$ * 0,75) +  (12$ * 0,75 * 0,75) + (12$ * 0,75 * 0,75 * 0,75) = 270,8125$
+```
+
+Necesito una función que, al pasarle las veces que voy a ir al cine, me diga si vale la pena comprar la tarjeta fidelidad o no.
+
+```js
+shouldBuyFidelity(1); // false -> Mejor comprar tickets de un sólo uso
+shouldBuyFidelity(100); // true -> Mejor comprar tarjeta fidelidad
+```
+
+La dificultad del reto está en encontrar una fórmula sencilla que nos diga el precio con descuento acumulado para la tarjeta fidelidad. 😜
+
+## Mi solución
+
+```js
+export default function shouldBuyFidelity(times) {
+  const descuento = (n) => {
+    let newDescuento = 12;
+    if (n < 1) return 0;
+
+    for (let i = 0; i < n; i++) newDescuento *= 0.75;
+
+    return newDescuento + descuento(n - 1);
+  };
+
+  const entradaNormal = 12 * times;
+  const tarjetaFidelidad = 250 + descuento(times);
+
+  return tarjetaFidelidad < entradaNormal ? true : false;
 }
 ```
 
