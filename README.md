@@ -702,7 +702,9 @@ export default function wrapGifts(gifts) {
   return regalos;
 }
 ```
+
 # [Día 14 | En busca del reno perdido](https://adventjs.dev/challenges/14)
+
 > En el pueblo de Santa Claus han ido a pasear a los renos y se les ha escapado uno. ¡Madre mía! Ahora a buscarlo. 😿
 
 ¡Hemos perdido a un reno y falta poco más de una semana para Navidad! 😱
@@ -714,15 +716,18 @@ Lo peor es que son tantos que no sabemos cuál es el que nos falta... ¡Qué lí
 **👎 Lo malo**: la lista está desordenada y podría faltar el último...
 
 Necesitamos una función que al pasarle la lista de ids de renos nos diga inmediatamente cuál es el que falta:
+
 ```js
-missingReindeer([0, 2, 3]) // -> 1
-missingReindeer([5, 6, 1, 2, 3, 7, 0]) // -> 4
-missingReindeer([0, 1]) // -> 2 (¡es el último el que falta!)
-missingReindeer([3, 0, 1]) // -> 2
-missingReindeer([9, 2, 3, 5, 6, 4, 7, 0, 1]) // -> 8
-missingReindeer([0]) // -> 1 (¡es el último el que falta!)
+missingReindeer([0, 2, 3]); // -> 1
+missingReindeer([5, 6, 1, 2, 3, 7, 0]); // -> 4
+missingReindeer([0, 1]); // -> 2 (¡es el último el que falta!)
+missingReindeer([3, 0, 1]); // -> 2
+missingReindeer([9, 2, 3, 5, 6, 4, 7, 0, 1]); // -> 8
+missingReindeer([0]); // -> 1 (¡es el último el que falta!)
 ```
+
 Parece fácil con una complejidad de O(n)... ¿crees que podrías hacerlo mejor?
+
 ## Mi solución
 
 ```js
@@ -732,6 +737,53 @@ export default function missingReindeer(ids) {
   for (let i = 1; i <= ids.length; i++) esperaValor += i;
 
   return esperaValor - ids.reduce((a, b) => a + b);
+}
+```
+
+# [Día 15 | El salto perfecto](https://adventjs.dev/challenges/15)
+
+> Estamos optimizando el trineo para que los saltos que da sean lo más óptimos posible. Un amigo que tiene un Tesla nos ha explicado la mejor forma. ¡A ver si sacamos una función para aseguarnos!
+> ¡Estamos haciendo los últimos ajustes para el trineo de Santa Claus!
+
+Como ya sabes, el trineo es volador y estamos ajustando el motor para que haga parabolas lo más óptimas posibles. Para esto el salto debe ser siempre hacia arriba y, a partir del punto más alto, debe bajar siempre hacia abajo...
+
+Nuestro mecánico de confianza, **Kiko Belfs**, que tiene un Tesla genial, nos ha explicado que los saltos se pueden ver como arrays... y que sólo tenemos que asegurarnos que **los números suben y bajan de forma correcta**. También nos avisa que sólo pasaremos **arrays de, como mínimo, tres posiciones**.
+
+Nos ha pasado algunos ejemplos de cómo debería ser nuestra función y algunos resultados:
+
+```js
+checkSledJump([1, 2, 3, 2, 1]); // true: sube y baja de forma estricta
+checkSledJump([0, 1, 0]); // -> true: sube y baja de forma estricta
+checkSledJump([0, 3, 2, 1]); // -> true: sube y baja de forma estricta
+checkSledJump([0, 1000, 1]); // -> true: sube y baja de forma estricta
+
+checkSledJump([2, 4, 4, 6, 2]); // false: no sube de forma estricta
+checkSledJump([1, 2, 3]); // false: sólo sube
+checkSledJump([1, 2, 3, 2, 1, 2, 3]); // false: sube y baja y sube... ¡no vale!
+```
+
+**Lo importante**: recorrer el array de izquierda a derecha para ver que la subida es siempre estricta, detectar el punto más alto y entonces ver que la bajada es estricta hacia abajo...
+
+## Mi solución
+
+```js
+export default function checkSledJump(heights) {
+  let subida = 0;
+  if (heights.length < 3) return false;
+
+  for (let first = 0; first < heights.length - 1; first++) {
+    if (heights[first] > heights[first + 1]) {
+      if (subida > 0) subida--;
+    } else if (heights[first] < heights[first + 1]) {
+      subida++;
+    } else {
+      return false;
+    }
+  }
+
+  if (subida) return false;
+
+  return true;
 }
 ```
 
