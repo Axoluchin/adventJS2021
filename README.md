@@ -1450,3 +1450,17 @@ export default function canMouseEat(direction, game) {
   }
 }
 ```
+
+# [Día 26 | WtF!!!!](https://adventjs.dev/challenges/26)
+
+> Hay un glitch!!!!
+
+El reto secreto. Devuelve la palabra "midudev".
+
+## Mi solución
+
+```js
+export default function devuelveMidudev() {
+  return "midudev";
+}
+```
